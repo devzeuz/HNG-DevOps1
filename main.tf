@@ -38,7 +38,7 @@ resource "aws_instance" "hng_ec2_instance" {
   instance_type               = "t2.micro"
   subnet_id                   = "subnet-0b0b5224c6bb51e97"
   key_name                    = aws_key_pair.generated_key.key_name
-  vpc_security_group_ids              = [aws_security_group.allow_ssh.name]
+  vpc_security_group_ids      = [aws_security_group.allow_ssh.name]
   associate_public_ip_address = true
   tags = {
     Name = "hng_ec2_instance"
