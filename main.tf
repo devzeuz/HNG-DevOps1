@@ -54,7 +54,6 @@ resource "aws_instance" "hng_ec2_instance" {
   }
 
   user_data = <<-EOF
-  <<-EOF
               #!/bin/bash
               apt-get update -y
               apt-get install -y nginx git
