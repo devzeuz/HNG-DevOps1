@@ -67,7 +67,6 @@ resource "aws_instance" "hng_ec2_instance" {
     chmod 644 /var/www/html/index.html
     systemctl restart nginx
   EOF
-
 }
 output "private_key" {
   value     = tls_private_key.key.private_key_pem
