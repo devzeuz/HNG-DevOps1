@@ -55,24 +55,30 @@ resource "aws_instance" "hng_ec2_instance" {
 
   user_data = <<-EOF
     #!/bin/bash
-  set -euxo pipefail
+set -euxo pipefail
 
-  yum update -y
-  yum install -y nginx git
+# Update system and install nginx and git
+sudo yum update -y
+sudo yum install -y nginx git
 
-  systemctl enable nginx
-  systemctl start nginx
+# Enable and start NGINX
+sudo systemctl enable nginx
+sudo systemctl start nginx
 
-  mkdir -p /usr/share/nginx/html
-  rm -f /usr/share/nginx/html/index.html
+# Deploy HTML
+sudo mkdir -p /usr/share/nginx/html
+sudo rm -f /usr/share/nginx/html/index.html
 
-  git clone https://github.com/devzeuz/hng13-stage0-devops.git /tmp/webrepo
-  cp /tmp/webrepo/index.html /usr/share/nginx/html/index.html
+sudo git clone https://github.com/devzeuz/hng13-stage0-devops.git /tmp/webrepo
+sudo cp /tmp/webrepo/index.html /usr/share/nginx/html/index.html
 
-  chmod 644 /usr/share/nginx/html/index.html
-  systemctl restart nginx
+sudo chmod 644 /usr/share/nginx/html/index.html
+sudo systemctl restart nginx
+
+echo "NGINX should now be running at your EC2 public IP"
   EOF
 }
+
 output "private_key" {
   value     = tls_private_key.key.private_key_pem
   sensitive = true
