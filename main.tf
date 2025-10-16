@@ -4,25 +4,24 @@ resource "aws_security_group" "allow_ssh" {
   vpc_id      = "vpc-007a82912ee1fbd89"
 }
 
-resource "aws_security_group_ingress_rule" "ssh_inbound"{
-    security_group_id = aws_security_group.allow_ssh.id
-    type              = "ingress"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks     = ["0.0.0.0/0"]
-}
 
-resource "aws_security_group_ingress_rule" "http_inbound"{
+resource "aws_vpc_security_group_rule" "ssh_inbound" {
     security_group_id = aws_security_group.allow_ssh.id
-    type              = "ingress"
+  type              = "ingress"
     from_port        = 80
     to_port          = 80
     protocol         = "tcp"
     cidr_blocks     = ["0.0.0.0/0"]
 }
 
-
+resource "aws_vpc_security_group_rule" "http_inbound" {
+    security_group_id = aws_security_group.allow_ssh.id
+  type              = "ingress"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks     = ["0.0.0.0/0"]
+}
 
 
 # resource "tls_private_key" "key" {
