@@ -1,6 +1,6 @@
 terraform {
   cloud {
-    organization = "daily_practice_hcl_tf"
+    organization = "practice-lab-"
     workspaces {
       name = "HNG-DevOps1"
     }
