@@ -55,17 +55,22 @@ resource "aws_instance" "hng_ec2_instance" {
 
   user_data = <<-EOF
     #!/bin/bash
-    set -euxo pipefail
-    apt-get update -y
-    apt-get install -y nginx git
-    systemctl enable nginx
-    systemctl start nginx
-    mkdir -p /var/www/html
-    rm -f /var/www/html/index.html
-    git clone https://github.com/devzeuz/hng13-stage0-devops.git /tmp/webrepo
-    cp /tmp/webrepo/index.html /var/www/html/index.html
-    chmod 644 /var/www/html/index.html
-    systemctl restart nginx
+  set -euxo pipefail
+
+  yum update -y
+  yum install -y nginx git
+
+  systemctl enable nginx
+  systemctl start nginx
+
+  mkdir -p /usr/share/nginx/html
+  rm -f /usr/share/nginx/html/index.html
+
+  git clone https://github.com/devzeuz/hng13-stage0-devops.git /tmp/webrepo
+  cp /tmp/webrepo/index.html /usr/share/nginx/html/index.html
+
+  chmod 644 /usr/share/nginx/html/index.html
+  systemctl restart nginx
   EOF
 }
 output "private_key" {
