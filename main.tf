@@ -43,17 +43,25 @@ resource "aws_instance" "hng_ec2_instance" {
   }
 
   user_data = <<-EOF
-  #!/bin/bash
-  sudo yum update -y
-  sudo yum install -y nginx
-  sudo systemctl start nginx
-  sudo systemctl enable nginx
+  <<-EOF
+              #!/bin/bash
+              apt-get update -y
+              apt-get install -y nginx git
+              
+              systemctl enable nginx
+              systemctl start nginx
 
-  rm -rf /usr/share/nginx/html/*
-  git clone https://github.com/devzeuz/hng13-stage0-devops.git /tmp/site
-  cp -r /tmp/site/* /usr/share/nginx/html/
-  chown -R nginx:nginx /usr/share/nginx/html/
-EOF
+              # Clean default index and pull HTML file
+              rm -f /var/www/html/index.nginx-debian.html
+              git clone https://github.com/devzeuz/hng13-stage0-devops.git /tmp/webrepo
+
+              # Replace index.html
+              cp /tmp/webrepo/index.html /var/www/html/index.html
+
+              # Adjust permissions
+              chmod 644 /var/www/html/index.html
+              systemctl restart nginx
+              EOF
 }
 
 # output "private_key" {
