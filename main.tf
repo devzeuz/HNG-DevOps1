@@ -20,15 +20,26 @@ resource "aws_vpc_security_group_ingress_rule" "http" {
   to_port           = 80
 }
 
-# resource "tls_private_key" "key" {
-#   algorithm = "RSA"
-#   rsa_bits  = 4096
-# }
+resource "tls_private_key" "key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
 
-# resource "aws_key_pair" "generated_key" {
-#   key_name   = "generated-key"
-#   public_key = tls_private_key.key.public_key_openssh
-# }
+resource "aws_key_pair" "gen_key" {
+  key_name   = "gen-key"
+  public_key = tls_private_key.key.public_key_openssh
+}
+
+resource "aws_s3_bucket" "key_bucket" {
+  bucket = "my-key-storage-bucket"
+}
+
+resource "aws_s3_object" "private_key" {
+  bucket       = aws_s3_bucket.key_bucket.bucket
+  key          = "web-key.pem"
+  content      = tls_private_key.key.private_key_pem
+  acl          = "private"
+}
 
 resource "aws_instance" "hng_ec2_instance" {
   ami                         = "ami-0341d95f75f311023"
