@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "us-east-1"
+}
+
 terraform {
   cloud {
     organization = "practice-lab-"
@@ -12,8 +16,4 @@ terraform {
       version = "~> 5.0"
     }
   }
-}
-
-provider "aws" {
-  region = "us-east-1"
 }
