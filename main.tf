@@ -4,17 +4,17 @@ resource "aws_security_group" "SG" {
   vpc_id      = "vpc-007a82912ee1fbd89"
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
+resource "aws_vpc_security_group_ingress_rule" "ssh" {
   security_group_id = aws_security_group.SG.id
-  cidr_ipv4         = ["0.0.0.0/0"]  
+  cidr_ipv4         = "0.0.0.0/0"  
   from_port         = 22
   ip_protocol       = "tcp"
   to_port           = 22
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
+resource "aws_vpc_security_group_ingress_rule" "http" {
   security_group_id = aws_security_group.SG.id
-  cidr_ipv4         = ["0.0.0.0/0"]  
+  cidr_ipv4         = "0.0.0.0/0"  
   from_port         = 80
   ip_protocol       = "tcp"
   to_port           = 80
