@@ -1,5 +1,5 @@
 resource "aws_security_group" "SG" {
-  name        = "sg-hng"
+  name        = "HNG-SG"
   description = "Allow SSH inbound traffic"
   vpc_id      = "vpc-007a82912ee1fbd89"
 }
