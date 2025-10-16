@@ -54,26 +54,21 @@ resource "aws_instance" "hng_ec2_instance" {
   }
 
   user_data = <<-EOF
-              #!/bin/bash
-              apt-get update -y
-              apt-get install -y nginx git
-              
-              systemctl enable nginx
-              systemctl start nginx
+    #!/bin/bash
+    set -euxo pipefail
+    apt-get update -y
+    apt-get install -y nginx git
+    systemctl enable nginx
+    systemctl start nginx
+    mkdir -p /var/www/html
+    rm -f /var/www/html/index.html
+    git clone https://github.com/devzeuz/hng13-stage0-devops.git /tmp/webrepo
+    cp /tmp/webrepo/index.html /var/www/html/index.html
+    chmod 644 /var/www/html/index.html
+    systemctl restart nginx
+  EOF
 
-              # Clean default index and pull HTML file
-              rm -f /var/www/html/index.nginx-debian.html
-              git clone https://github.com/devzeuz/hng13-stage0-devops.git /tmp/webrepo
-
-              # Replace index.html
-              cp /tmp/webrepo/index.html /var/www/html/index.html
-
-              # Adjust permissions
-              chmod 644 /var/www/html/index.html
-              systemctl restart nginx
-              EOF
 }
-
 output "private_key" {
   value     = tls_private_key.key.private_key_pem
   sensitive = true
@@ -82,3 +77,6 @@ output "private_key" {
 output "instace_public_ip" {
     value = aws_instance.hng_ec2_instance.public_ip
 }
+
+
+
